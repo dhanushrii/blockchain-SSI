@@ -36,7 +36,7 @@ async def issue_vc_endpoint(req: VCRequest):
 @app.post("/vcs/verify")
 async def verify_vc_endpoint(req: VerifyRequest):
     try:
-        result = verify_vc(req.vc)
+        result = verify_vc(req.vc)   # ✅ pass dict directly, not json.dumps
         return {"success": True, "result": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

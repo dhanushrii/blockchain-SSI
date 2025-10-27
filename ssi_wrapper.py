@@ -31,29 +31,51 @@ def create_employer_did():
     return json.loads(result.stdout)
 
 def issue_vc(holder_did: str, degree: dict):
-    """
-    Calls Node script to issue a Verifiable Credential
-    """
+    import subprocess, json
+
     payload = json.dumps({
         "holderDid": holder_did,
         "degree": degree
     })
 
     result = subprocess.run(
-        ["node", "ssi_person2/blockchain/issue-credential.js", payload],
+        ["node", "ssi_person2/Blockchain/issue-credential.js", payload],
         capture_output=True,
         text=True
     )
-    return json.loads(result.stdout)
+
+    if not result.stdout.strip():
+        raise Exception(f"Node script did not return valid JSON. STDERR: {result.stderr}")
+
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError as e:
+        raise Exception(f"Invalid JSON from Node: {result.stdout}\nError: {e}")
+
 
 def verify_vc(vc: dict):
     """
     Calls Node script to verify a Verifiable Credential
     """
+    # Convert Python dict → JSON string
     payload = json.dumps(vc)
+
+    # Pass payload as argument to Node
     result = subprocess.run(
         ["node", "ssi_person2/blockchain/verify-credential.js", payload],
         capture_output=True,
         text=True
     )
-    return json.loads(result.stdout)
+
+    # Debugging (optional, comment out later)
+    # print("STDOUT:", result.stdout)
+    # print("STDERR:", result.stderr)
+
+    # Handle empty or invalid JSON from Node
+    if not result.stdout.strip():
+        raise ValueError("Node script returned empty output")
+
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError:
+        raise ValueError(f"Invalid JSON output from Node: {result.stdout}")

@@ -1,11 +1,4 @@
 # 🎓 Degree Verification using Self-Sovereign Identity (SSI)
-
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-blue)
-![Backend](https://img.shields.io/badge/Backend-Flask-orange)
-![Smart%20Contracts](https://img.shields.io/badge/Smart%20Contracts-Hardhat-yellow)
-![Database](https://img.shields.io/badge/Database-SQLite-lightgrey)
-
 ---
 
 ## 🔍 Overview
